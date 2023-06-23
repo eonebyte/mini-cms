@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "_head"}}
+
+<body>
+  {{template "_header" "http://localhost:1323/"}}
+
+  <div class="container mx-auto px-4 mt-5">
+    <form method="post" action="/articles_post" onsubmit="return confirm('Yakin ingin publish ?')">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+        Title
+      </label>
+      <input name="title"
+        class="shadow appearance-none border border-gray-300 rounded-lg bg-gray-50 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+        id="title" type="text" placeholder="Title">
+
+      <label for="desc" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desciption</label>
+      <textarea name="description" id="desc" rows="4"
+        class="block mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Write Description"></textarea>
+
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="category">
+        Category
+      </label>
+      <select name="category_id" id="category" class="w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 mb-5">
+        {{range $index, $elem := .categories}}
+        <option value="{{$elem.ID}}">{{$elem.Name}}</option>
+        {{end}}
+      </select>
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="mytextarea">
+        Content
+      </label>
+      <textarea id="mytextarea" name="content"></textarea>
+      <div class="flex justify-center">
+        <button class="bg-blue-500 rounded px-2 text-white mt-5" id="submit" type="submit">Publish</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    tinymce.init({
+      selector: '#mytextarea',
+      plugins: 'image',
+      toolbar: 'undo redo | blocks | image | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+      images_upload_url: "/upload",
+      relative_urls: false,
+      remove_script_host: false,
+      convert_urls: true,
+    });
+  </script>
+</body>
+
+</html>

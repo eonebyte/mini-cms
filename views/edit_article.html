@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "_head"}}
+<body>
+{{template "_header"}}
+
+<div class="container mx-auto px-4 mt-5">
+<button class="bg-blue-500 text-white rounded px-4 py2 mt-3" onclick="history.back()">Kembali</button>
+</div>
+<div class="container mx-auto px-4 mt-5">
+  <form method="post" action="/article_update/{{.articleID}}" onsubmit="return confirm('Yakin ingin publish ?')">
+    <input type="hidden" name="_method" value="PUT">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+      Title
+    </label>
+    <input name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5" id="title" type="text" placeholder="Title" value="{{.articleTitle}}">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="mytextarea">
+      Content
+    </label>
+    <textarea id="mytextarea" name="content">{{.articleContent}}</textarea>
+    <div class="flex justify-center">
+      <button class="bg-blue-500 rounded px-2 text-white mt-5" id="submit" type="submit">Update</button>
+    </div>
+  </form>
+
+  
+</div>
+</body>
+</html>
