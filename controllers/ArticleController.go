@@ -52,11 +52,11 @@ func ArticleCreate(c echo.Context) error {
 	contentType := c.Request().Header.Get("Content-type")
 	if contentType == "application/x-www-form-urlencoded" {
 		if article.CreateArticle() != nil {
-			response.ErrorCode = 0
-			response.Message = "Gagal create data artikel"
+			response.ErrorCode = 10
+			response.Message = "Gagal create data user"
 		} else {
-			response.ErrorCode = 200
-			response.Message = "Berhasil create data artikel"
+			response.ErrorCode = 0
+			response.Message = "Sukses create data user"
 			response.Data = *article
 		}
 	}

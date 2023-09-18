@@ -13,36 +13,39 @@ import (
 // }
 
 type Article struct {
-	ID          int           `json:"id" form:"id" gorm:"primaryKey"`
+	ID          int           `json:"id" form:"id" gorm:"primary_key"`
 	Title       string        `json:"title" form:"title"`
 	Content     template.HTML `json:"content" form:"content"`
 	Description string        `json:"description" form:"description"`
 	CreatedAt   time.Time     `json:"created_at" form:"created_at"`
 	UpdatedAt   time.Time     `json:"updated_at" form:"updated_at"`
+	CategoryId  string        `form:"category_id"`
 }
 
 func (article *Article) CreateArticle() error {
-	if err := config.DB.Create(article).Error; err != nil {
-		return nil
+	err := config.DBGorm.Create(article).Error
+	if err != nil {
+		return err
 	}
+
 	return nil
 }
 
 func GetOneArticle(id int) (Article, error) {
 	var article Article
-	result := config.DB.Where("id = ?", id).First(&article)
+	result := config.DBGorm.Where("id = ?", id).First(&article)
 	return article, result.Error
 }
 
 func (article *Article) UpdateArticle(id int) error {
-	if err := config.DB.Model(&Article{}).Where("id = ?", id).Updates(article).Error; err != nil {
+	if err := config.DBGorm.Model(&Article{}).Where("id = ?", id).Updates(article).Error; err != nil {
 		return nil
 	}
 	return nil
 }
 
 func (article *Article) DeleteArticle() error {
-	if err := config.DB.Delete(article).Error; err != nil {
+	if err := config.DBGorm.Delete(article).Error; err != nil {
 		return err
 	}
 	return nil
@@ -50,14 +53,16 @@ func (article *Article) DeleteArticle() error {
 
 func GetAll(keywords string) ([]Article, error) {
 	var article []Article
-	result := config.DB.Where("title LIKE ?", "%"+keywords+"%").Find(&article)
+	result := config.DBGorm.Where("title LIKE ?", "%"+keywords+"%").Find(&article)
 
 	return article, result.Error
 }
 
 func GetAllArticles() ([]Article, error) {
-	var article []Article
-	result := config.DB.Find(&article)
-
-	return article, result.Error
+	var articles []Article
+	err := config.DBGorm.Find(&articles).Error
+	if err != nil {
+		return nil, err
+	}
+	return articles, nil
 }
